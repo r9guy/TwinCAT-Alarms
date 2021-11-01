@@ -1,0 +1,55 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.9">
+  <POU Name="MAIN" Id="{76128155-aabc-4710-b495-1e6516dff03b}" SpecialFunc="None">
+    <Declaration><![CDATA[PROGRAM MAIN
+VAR
+	CfgEvent				: TcEvent;
+	fbEvent					: ADSLOGEVENT;
+
+	eventData				: ST_EventData;
+	TcEventDataFormatString : STRING	:= '%f%d';
+END_VAR]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[CfgEvent.Class := TCEVENTCLASS_ALARM;
+CfgEvent.Prio := 2;
+CfgEvent.Id := 2;
+CfgEvent.SourceId := 102;
+CfgEvent.bQuitRequired := CfgEvent.bQuitRequired;
+CfgEvent.DataFormatStrAddress := ADR(TcEventDataFormatString);
+CfgEvent.Flags := TCEVENTFLAG_LOG OR TCEVENTFLAG_SRCID OR TCEVENTFLAG_AUTOFMTALL;
+CfgEvent.StreamType := TCEVENTSTREAM_SIMPLE;
+CfgEvent.ProgId :='TcEventFormatter.TcXMLFormatter' ;
+
+eventData.rVal 	:= 2.65;
+eventData.iVal	:= 3;
+
+
+		
+fbEvent(
+	NETID:= '', 
+	PORT:= 110, 
+	Event:= fbEvent.Event, 
+	EventQuit:= fbEvent.EventQuit, 
+	EventConfigData:= CfgEvent, 
+	EventDataAddress:= ADR(eventData), 
+	EventDataLength:=  SIZEOF(eventData),
+	FbCleanup:= , 
+	TMOUT:= T#3S, 
+	EventState=> , 
+	Err=> , 
+	ErrId=> , 
+	Quit=> );
+
+]]></ST>
+    </Implementation>
+    <LineIds Name="MAIN">
+      <LineId Id="3" Count="12" />
+      <LineId Id="2" Count="0" />
+      <LineId Id="30" Count="0" />
+      <LineId Id="32" Count="12" />
+      <LineId Id="31" Count="0" />
+      <LineId Id="53" Count="0" />
+      <LineId Id="52" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

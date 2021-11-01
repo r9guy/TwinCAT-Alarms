@@ -1,0 +1,63 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.9">
+  <POU Name="MAIN" Id="{4e0d88d5-cdad-48a2-a95a-718032bb0b15}" SpecialFunc="None">
+    <Declaration><![CDATA[PROGRAM MAIN
+VAR
+	control:fb_control;
+	ServoPower:MC_Power;
+	ServoReset:MC_Reset;
+	Axis: AXIS_REF;
+	Events:FB_AdsReadEvents;
+	nNumberOfEvents: UDINT;
+	bBusy: BOOL;
+	bDone: BOOL;
+	bError: BOOL;
+	nErrId: UDINT;
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[control(Start:= control.Start, McOutputs=> , Axis:= Axis);
+
+ServoPower(
+	Axis:= Axis, 
+	Enable:= ServoPower.Enable, 
+	Enable_Positive:= TRUE, 
+	Enable_Negative:= TRUE, 
+	Override:= , 
+	BufferMode:= MC_Aborting, 
+	Options:= , 
+	Status=> , 
+	Busy=> , 
+	Active=> , 
+	Error=> , 
+	ErrorID=> );
+
+ServoReset(
+	Axis:= Axis, 
+	Execute:= ServoReset.Execute, 
+	Done=> , 
+	Busy=> , 
+	Error=> , 
+	ErrorID=> );	
+
+	
+Events(
+	sNetId:= '', 
+	bReadEvents:= Events.bReadEvents, 
+	nLanguageId:= 1033, 
+	eDateAndTimeFormat:= E_DateAndTimeFormat.de_DE, 
+	tRefreshTime:= T#1S, 
+	tTimeout:= T#5S, 
+	aEvents=> , 
+	nNumberOfEvents=> nNumberOfEvents, 
+	bBusy=> bBusy, 
+	bDone=> bDone, 
+	bError=> bError, 
+	nErrId=> nErrId);]]></ST>
+    </Implementation>
+    <LineIds Name="MAIN">
+      <LineId Id="178" Count="36" />
+      <LineId Id="124" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>
